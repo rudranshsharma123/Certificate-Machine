@@ -223,12 +223,16 @@ const App = () => {
       complete: function (results) {
         const rowsArray = [];
         const valuesArray = [];
-
+        var string = '';
+        const sender = [];
+        const recipients = [];
         // Iterating data to get column name and their values
         results.data.map((d) => {
           rowsArray.push(Object.keys(d));
-          
           valuesArray.push(Object.values(d));
+          getGifList(Object.values(d)[1], testNftTitle, testNftSymbol, testNftUri);
+          // sender.push(Object.values(d)[0])
+          // string +="hello";
         });
         
         // Parsed Data Response in array format
@@ -239,6 +243,8 @@ const App = () => {
 
         // Filtered Values
         setValues(valuesArray);
+        console.log(recipients);
+        console.log(string);
         console.log(results.data);
         console.log(rowsArray[0]);
         console.log(valuesArray);
