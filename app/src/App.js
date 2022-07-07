@@ -21,7 +21,7 @@ const App = () => {
   const [tableRows, setTableRows] = useState([]);
   const [values, setValues] = useState([]);
   const network = clusterApiUrl('devnet');
-  const testNftUri = "test.json"
+  const testNftUri = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json"
   const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
   );
@@ -215,12 +215,13 @@ const App = () => {
 
 
   
-  const changeHandler = (event) => {
+  const changeHandler = async (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
+    
     Papa.parse(event.target.files[0], {
       header: true,
       skipEmptyLines: true,
-      complete: function (results) {
+      complete: async function (results) {
         const rowsArray = [];
         const valuesArray = [];
         var string = '';
@@ -230,8 +231,9 @@ const App = () => {
         results.data.map((d) => {
           rowsArray.push(Object.keys(d));
           valuesArray.push(Object.values(d));
-          getGifList(Object.values(d)[1], testNftTitle, testNftSymbol, testNftUri);
-          // sender.push(Object.values(d)[0])
+          
+          
+          recipients.push(Object.values(d)[1])
           // string +="hello";
         });
         
@@ -250,6 +252,7 @@ const App = () => {
         console.log(valuesArray);
         
       },
+      
     });
   };
 
