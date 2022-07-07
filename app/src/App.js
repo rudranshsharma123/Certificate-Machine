@@ -1,6 +1,6 @@
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
-import Papa from 'papaparse'
+import Papa from 'papaparse';
 import React, { useState, useEffect } from "react";
 import idl from './assets/idl.json'
 import { Connection, PublicKey, clusterApiUrl, Keypair } from '@solana/web3.js';
@@ -20,6 +20,7 @@ const App = () => {
   // It will store the file uploaded by the user
   const [tableRows, setTableRows] = useState([]);
   const [values, setValues] = useState([]);
+  const [recipients, setRecipients] = useState([]);
   const network = clusterApiUrl('devnet');
   const testNftUri = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json"
   const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey(
@@ -123,7 +124,7 @@ const App = () => {
       console.log("Your transaction signature", tx);
 
       // console.log("Got the account", account)
-
+     
       const ownerTokenAddress = await utils.token.associatedAddress({
         mint: mint.publicKey,
         owner: baseAccount,
@@ -137,7 +138,7 @@ const App = () => {
       console.log(`Buyer's Token Address: ${buyerTokenAddress}`);
 
       // Transact with the "sell" function in our on-chain program
-
+      await delay(1000);
       await program.methods
         .send()
         .accounts({
@@ -148,6 +149,7 @@ const App = () => {
           buyerAuthority: buyer,
         })
         .rpc();
+        
     } catch (error) {
       console.log("Error in getGifList: ", error)
 
@@ -202,38 +204,49 @@ const App = () => {
       Connect to Wallet
     </button>
   );
+  const sendAdress = async () => {
+    var recipients_length = recipients.length;
+    for (var i = 0; i < recipients_length; i++) {
+      console.log(i);
+      await getGifList(recipients[i], testNftTitle, testNftSymbol, testNftUri);
+    
+  }
+  };
+  function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  }
 
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletIsConnected();
     };
+
     window.addEventListener('load', onLoad);
     return () => window.removeEventListener('load', onLoad);
   }, []);
-
+ 
 
 
 
   
-  const changeHandler = async (event) => {
+  const changeHandler =  async (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
     
     Papa.parse(event.target.files[0], {
       header: true,
       skipEmptyLines: true,
-      complete: async function (results) {
+      complete: function (results) {
         const rowsArray = [];
         const valuesArray = [];
         var string = '';
         const sender = [];
-        const recipients = [];
+        const recipients_to_send = [];
         // Iterating data to get column name and their values
         results.data.map((d) => {
           rowsArray.push(Object.keys(d));
           valuesArray.push(Object.values(d));
+          recipients_to_send.push(Object.values(d)[1])
           
-          
-          recipients.push(Object.values(d)[1])
           // string +="hello";
         });
         
@@ -244,6 +257,7 @@ const App = () => {
         setTableRows(rowsArray[0]);
 
         // Filtered Values
+        setRecipients(recipients_to_send);
         setValues(valuesArray);
         console.log(recipients);
         console.log(string);
@@ -254,6 +268,12 @@ const App = () => {
       },
       
     });
+    // console.log(results.data);
+    
+    // console.log(values);
+    // console.log(tableRows);
+    // console.log("hello");
+   
   };
 
 
@@ -273,6 +293,11 @@ const App = () => {
           <button className = "cta-button button-to-transfer"  onClick={async () => {
             getGifList("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", testNftTitle, testNftSymbol, testNftUri)
           }}>Send NFTs</button>
+        </div>
+        <div>
+          <button className = "cta-button button-to-send"  onClick={async () => {
+            sendAdress();
+          }}>Send to All Adresses</button>
         </div>
         <div><p className="sub-text">
             Enter a csv file ✨
