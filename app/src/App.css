@@ -4,7 +4,10 @@
   overflow: auto;
   text-align: center;
 }
-
+.sub-text {
+  font-size: 25px;
+  color: white;
+}
 .container {
   height: 100%;
   display: flex;
@@ -62,6 +65,8 @@
   font-size: 16px;
   font-weight: bold;
   color: white;
+  
+  
 }
 .select-file {
   background: -webkit-linear-gradient(left, #14EE97, #35aee2);
@@ -72,8 +77,15 @@
   background: -webkit-linear-gradient(left, #14EE97, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
+  
 }
 
+.button-to-transfer {
+  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  left: 350px;
+}
 .submit-gif-button {
   background: -webkit-linear-gradient(left, #4e44ce, #35aee2);
   background-size: 200% 200%;
@@ -102,7 +114,10 @@
   font-size: 16px;
   font-weight: bold;
 }
-
+.minus-text {
+  font-size: 16px;
+  color: white;
+}
 .gif-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
@@ -119,7 +134,11 @@
   justify-self: center;
   align-self: center;
 }
-
+.select-file {
+  background: -webkit-linear-gradient(left, #14EE97, #35aee2);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+}
 .gif-item img {
   width: 100%;
   height: 300px;
