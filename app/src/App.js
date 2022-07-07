@@ -1,37 +1,25 @@
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 import Papa from 'papaparse'
-import React, { useState } from "react";
-import idl from './idl.json';
+import React, { useState, useEffect } from "react";
+import idl from './assets/idl.json'
+import { Connection, PublicKey, clusterApiUrl, Keypair } from '@solana/web3.js';
+import { AnchorProvider, Program, Provider, web3, utils } from '@project-serum/anchor';
+
 // Constants
 const TWITTER_HANDLE = '_buildspace';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
-<<<<<<< Updated upstream
-function App() {
-  // State to store pa
-  const allowedExtensions = ["csv"];
-  const [parsedData, setParsedData] = useState([]);
-  // It will store the file uploaded by the user
-  const [file, setFile] = useState("");
-  //State to store table Column name
-  const [tableRows, setTableRows] = useState([]);
-=======
 const App = () => {
-
   const [data, setData] = useState([]);
   const allowedExtensions = ["csv"];
-  const [parsedData, setParsedData] = useState([]);
   // It state will contain the error when
   // correct file extension is not used
-  const [tableRows, setTableRows] = useState([]);
-
-  //State to store the values
-  const [values, setValues] = useState([]);
-  const [error, setError] = useState("");
+  const [parsedData, setParsedData] = useState([]);
   const [walletAddress, setWalletAddress] = useState(null);
   // It will store the file uploaded by the user
-  const [file, setFile] = useState("");
+  const [tableRows, setTableRows] = useState([]);
+  const [values, setValues] = useState([]);
   const network = clusterApiUrl('devnet');
   const testNftUri = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/main/test.json"
   const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey(
@@ -59,15 +47,15 @@ const App = () => {
       ],
       program.programId,
     );
-    const txn = await program.methods
-      .initializeStorageAccount()
-      .accounts({
-        storageAccount: pda,
-      })
-      .rpc();
+    // const txn = await program.methods
+    //   .initializeStorageAccount()
+    //   .accounts({
+    //     storageAccount: pda,
+    //   })
+    //   .rpc();
   }
 
-  const SendNft = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri) => {
+  const getGifList = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri) => {
     try {
 
       const buyer = new PublicKey(buyer_address)
@@ -161,7 +149,7 @@ const App = () => {
         })
         .rpc();
     } catch (error) {
-      console.log("Error in SendNft: ", error)
+      console.log("Error in getGifList: ", error)
 
     }
   }
@@ -214,21 +202,19 @@ const App = () => {
       Connect to Wallet
     </button>
   );
+
+  useEffect(() => {
+    const onLoad = async () => {
+      await checkIfWalletIsConnected();
+    };
+    window.addEventListener('load', onLoad);
+    return () => window.removeEventListener('load', onLoad);
+  }, []);
+
+
+
+
   
->>>>>>> Stashed changes
-
-  //State to store the values
-  const [values, setValues] = useState([]);
-
-<<<<<<< Updated upstream
-  const [error, setError] = useState("");
-   
-
-   
-=======
-
-
->>>>>>> Stashed changes
   const changeHandler = (event) => {
     // Passing file data (event.target.files[0]) to parse using Papa.parse
     Papa.parse(event.target.files[0], {
@@ -261,31 +247,26 @@ const App = () => {
     });
   };
 
+
+
   return (
     <div className="App">
-<<<<<<< Updated upstream
-    <div className="container">
-    <div className="header-container">
-=======
       <div className={walletAddress ? 'authed-container' : 'container'}>
 
         <div className="header-container">
->>>>>>> Stashed changes
-          <p className="header">Certificate Machine📚</p>
+          <p className="header">Certificate Machine</p>
           <p className="sub-text">
-            Please provide a .csv file ✨
+            View your GIF collection in the metaverse ✨
           </p>
         </div>
+        <div>{!walletAddress && renderNotConnectedContainer()}</div>
         <div>
-<<<<<<< Updated upstream
-=======
-          <button className = "button-to-transfer" onClick={async () => {
-            SendNft("BEUBokCna6z9fjSyBwfYEkcEMdx6Kbf6MVK1wezJ6omN", testNftTitle, testNftSymbol, testNftUri)
-          }}>Send NFT to addresses</button>
+          <button className onClick={async () => {
+            getGifList("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", testNftTitle, testNftSymbol, testNftUri)
+          }}>hello</button>
         </div>
-        <div>
-        <p className="sub-text">
-            Please provide a .csv file ✨
+        <div><p className="sub-text">
+            Enter a csv file ✨
           </p>
           <input
         type="file"
@@ -296,9 +277,8 @@ const App = () => {
         style={{margin: "10px auto"}}
       />
           <br />
-      <br />
-      {/* Table */}
-      <table>
+          <br />
+          <table>
      
         <thead>
           <tr>
@@ -324,7 +304,6 @@ const App = () => {
         </tbody>
       </table>
         </div>
->>>>>>> Stashed changes
       </div>
     <div>
       {/* File Uploader */}
@@ -364,10 +343,9 @@ const App = () => {
           })}
         </tbody>
       </table>
-    </div>
-    </div>
+      </div>
     </div>
   );
-}
+};
 
 export default App;

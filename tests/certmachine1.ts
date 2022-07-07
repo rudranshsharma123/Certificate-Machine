@@ -19,7 +19,7 @@ describe("certmachine1", () => {
 	const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey(
 		"metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
 	);
-	const buyer = new PublicKey("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W");
+	const buyer = new PublicKey("7iuqddUQJhger2p75SGV3MngZW6WEG6DDnW3U4yZHYWK");
 	// it("Creates the Storage Account", async () => {
 	// 	const [pda, _] = await PublicKey.findProgramAddress(
 	// 		[

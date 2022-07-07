@@ -1,13 +1,10 @@
 .App {
   height: 100vh;
-  background-color: #0C1434;
+  background-color: #1a202c;
   overflow: auto;
   text-align: center;
 }
-.sub-text {
-  font-size: 25px;
-  color: white;
-}
+
 .container {
   height: 100%;
   display: flex;
@@ -29,21 +26,10 @@
   font-size: 50px;
   font-weight: bold;
   color: white;
-  position: absolute;
-  top: 70px;
-  left: 500px;
 }
 
 .sub-text {
   font-size: 25px;
-  color: white;
-}
-.minus-text {
-  font-size: 16px;
-  color: white;
-}
-.minus-text {
-  font-size: 16px;
   color: white;
 }
 
@@ -65,27 +51,14 @@
   font-size: 16px;
   font-weight: bold;
   color: white;
-  
-  
-}
-.select-file {
-  background: -webkit-linear-gradient(left, #14EE97, #35aee2);
-  background-size: 200% 200%;
-  animation: gradient-animation 4s ease infinite;
-}
-.connect-wallet-button {
-  background: -webkit-linear-gradient(left, #14EE97, #35aee2);
-  background-size: 200% 200%;
-  animation: gradient-animation 4s ease infinite;
-  
 }
 
-.button-to-transfer {
+.connect-wallet-button {
   background: -webkit-linear-gradient(left, #60c657, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
-  left: 350px;
 }
+
 .submit-gif-button {
   background: -webkit-linear-gradient(left, #4e44ce, #35aee2);
   background-size: 200% 200%;
@@ -117,6 +90,12 @@
 .minus-text {
   font-size: 16px;
   color: white;
+}
+.button-to-transfer {
+  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  left: 350px;
 }
 .gif-grid {
   display: grid;
