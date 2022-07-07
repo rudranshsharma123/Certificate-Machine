@@ -92,7 +92,7 @@
   color: white;
 }
 .button-to-transfer {
-  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background: -webkit-linear-gradient(left, #12b89a, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
   left: 350px;
@@ -114,6 +114,7 @@
   align-self: center;
 }
 .select-file {
+  
   background: -webkit-linear-gradient(left, #14EE97, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;

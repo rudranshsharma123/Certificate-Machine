@@ -21,7 +21,7 @@ const App = () => {
   const [tableRows, setTableRows] = useState([]);
   const [values, setValues] = useState([]);
   const network = clusterApiUrl('devnet');
-  const testNftUri = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/main/test.json"
+  const testNftUri = "test.json"
   const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
   );
@@ -261,9 +261,9 @@ const App = () => {
         </div>
         <div>{!walletAddress && renderNotConnectedContainer()}</div>
         <div>
-          <button className onClick={async () => {
+          <button className = "cta-button button-to-transfer"  onClick={async () => {
             getGifList("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", testNftTitle, testNftSymbol, testNftUri)
-          }}>hello</button>
+          }}>Send NFTs</button>
         </div>
         <div><p className="sub-text">
             Enter a csv file ✨
@@ -307,42 +307,10 @@ const App = () => {
       </div>
     <div>
       {/* File Uploader */}
-      <input
-        type="file"
-        name="file"
-        className="select-file"
-        onChange={changeHandler}
-        accept=".csv"
-        style={{margin: "10px auto"}}
-      />
-      <br />
-      <br />
+      
+      
       {/* Table */}
-      <table>
      
-        <thead>
-          <tr>
-          {/* <p className="minus-text"> */}
-          {/* <p className="sub-text"> */}
-            {tableRows.map((rows, index) => {
-              
-              return <th className ="minus-text" key={index}>{rows}</th>;
-            })}
-          {/* </p> */}
-          </tr>
-        </thead>
-        <tbody>
-          {values.map((value, index) => {
-            return (
-              <tr key={index}>
-                {value.map((val, i) => {
-                  return <td className="minus-text" key={i}>{val}</td>;
-                })}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
       </div>
     </div>
   );
