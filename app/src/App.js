@@ -1,10 +1,13 @@
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
-import Papa from 'papaparse'
+import Papa from 'papaparse';
 import React, { useState, useEffect } from "react";
 import idl from './assets/idl.json'
 import { Connection, PublicKey, clusterApiUrl, Keypair } from '@solana/web3.js';
 import { AnchorProvider, Program, Provider, web3, utils } from '@project-serum/anchor';
+import NamespaceFactory from '@project-serum/anchor/dist/cjs/program/namespace';
+import { use } from 'chai';
+import { NewLineKind } from 'typescript';
 
 // Constants
 const TWITTER_HANDLE = '_buildspace';
@@ -15,12 +18,18 @@ const App = () => {
   const allowedExtensions = ["csv"];
   // It state will contain the error when
   // correct file extension is not used
-  const [error, setError] = useState("");
+  const [parsedData, setParsedData] = useState([]);
   const [walletAddress, setWalletAddress] = useState(null);
+  const [namesUsers, setnamesUsers] = useState([]);
+  const [NftTitle, setNftTitle] = useState([]);
+  const [NftSymbol, setNftSymbol] = useState([]);
+  const [NftLink, setNftLink] = useState([]);
   // It will store the file uploaded by the user
-  const [file, setFile] = useState("");
+  const [tableRows, setTableRows] = useState([]);
+  const [values, setValues] = useState([]);
+  const [recipients, setRecipients] = useState([]);
   const network = clusterApiUrl('devnet');
-  const testNftUri = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/main/test.json"
+  // const NftLink = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json"
   const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
   );
@@ -30,8 +39,8 @@ const App = () => {
   }
   const programID = new PublicKey(idl.metadata.address);
 
-  const testNftTitle = "Cukc";
-  const testNftSymbol = "CUCK";
+  // const NftTitle = "Cukc";
+  // const NftSymbol = "CUCK";
   const CREATE_MINT_SEED = "createmints";
 
   // Only call this function once for each wallet address no need to run it again it will fail
@@ -54,9 +63,9 @@ const App = () => {
       .rpc();
   }
 
-  const getGifList = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri) => {
+  const mintProcess = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri, position) => {
     try {
-
+      
       const buyer = new PublicKey(buyer_address)
       const baseAccount = new PublicKey(walletAddress)
       console.log(baseAccount)
@@ -76,6 +85,11 @@ const App = () => {
         ],
         program.programId,
       );
+
+      // await initializeStorageAccount();
+
+
+
       // const txn = await program.methods
       //   .initializeStorageAccount()
       //   .accounts({
@@ -122,7 +136,7 @@ const App = () => {
       console.log("Your transaction signature", tx);
 
       // console.log("Got the account", account)
-
+     
       const ownerTokenAddress = await utils.token.associatedAddress({
         mint: mint.publicKey,
         owner: baseAccount,
@@ -147,8 +161,13 @@ const App = () => {
           buyerAuthority: buyer,
         })
         .rpc();
+       
     } catch (error) {
-      console.log("Error in getGifList: ", error)
+      console.log("Error in mintProcess: ", error)
+      console.log("Number is ", position);
+      delay(500);
+      await mintProcess(recipients[position], NftTitle[position], NftSymbol[position], NftLink[position])
+      
 
     }
   }
@@ -201,58 +220,86 @@ const App = () => {
       Connect to Wallet
     </button>
   );
+  const sendAddress = async () => {
+    var recipients_length = recipients.length;
+    var position = 0;
+    for (var i = 0; i < recipients_length; i++) {
+      console.log(i);
+      console.log(namesUsers[i]);
+      
+      console.log(recipients[i]);
+      position = i;
+
+      await mintProcess(recipients[i], NftTitle[i], NftSymbol[i], NftLink[i], position);
+    
+  }
+  };
+  function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  }
 
   useEffect(() => {
     const onLoad = async () => {
       await checkIfWalletIsConnected();
     };
+
     window.addEventListener('load', onLoad);
     return () => window.removeEventListener('load', onLoad);
   }, []);
+ 
 
 
 
-
-  const handleFileChange = (e) => {
-    setError("");
-
-    // Check if user has entered the file
-    if (e.target.files.length) {
-      const inputFile = e.target.files[0];
-
-      // Check the file extensions, if it not
-      // included in the allowed extensions
-      // we show the error
-      const fileExtension = inputFile?.type.split("/")[1];
-      if (!allowedExtensions.includes(fileExtension)) {
-        setError("Please input a csv file");
-        return;
-      }
-
-      // If input type is correct set the state
-      setFile(inputFile);
-    }
-  };
-  const handleParse = () => {
-
-    // If user clicks the parse button without
-    // a file we show a error
-    if (!file) return setError("Enter a valid file");
-
-    // Initialize a reader which allows user
-    // to read any file or blob.
-    const reader = new FileReader();
-
-    // Event listener on reader when the file
-    // loads, we parse it and set the data.
-    reader.onload = async ({ target }) => {
-      const csv = Papa.parse(target.result, { header: true });
-      const parsedData = csv?.data;
-      console.log(parsedData)
-      const columns = Object.keys(parsedData[0]);
-      setData(columns);
-    };
-    reader.readAsText(file);
+  
+  const changeHandler =  async (event) => {
+    // Passing file data (event.target.files[0]) to parse using Papa.parse
+    
+    Papa.parse(event.target.files[0], {
+      header: true,
+      skipEmptyLines: true,
+      complete: function (results) {
+        const rowsArray = [];
+        const valuesArray = [];
+        var string = '';
+        const names = [];
+        const symbols = [];
+        const recipients_to_send = [];
+        const link = [];
+        // Iterating data to get column name and their values
+        results.data.map((d) => {
+          rowsArray.push(Object.keys(d));
+          valuesArray.push(Object.values(d));
+          recipients_to_send.push(Object.values(d)[1]);
+          names.push(Object.values(d)[0]);
+          symbols.push(Object.values(d)[3]);
+          link.push(Object.values(d)[2]);
+          // string +="hello";
+        });
+        
+        setNftLink(link);
+        setParsedData(results.data);
+        setNftTitle(names);
+        setNftSymbol(symbols);
+        setTableRows(rowsArray[0]);
+        setRecipients(recipients_to_send);
+        setValues(valuesArray);
+        setnamesUsers(names);
+      
+        console.log(recipients);
+        console.log(string);
+        console.log(results.data);
+        console.log(rowsArray[0]);
+        console.log(valuesArray);
+        
+      },
+      
+    });
+    // console.log(results.data);
+    
+    // console.log(values);
+    // console.log(tableRows);
+    // console.log("hello");
+   
   };
 
 
@@ -262,35 +309,73 @@ const App = () => {
       <div className={walletAddress ? 'authed-container' : 'container'}>
 
         <div className="header-container">
-          <p className="header">🖼 GIF Portal</p>
+          <p className="header">NFT Helper</p>
           <p className="sub-text">
-            View your GIF collection in the metaverse ✨
+            NFT Helper is a tool asist non-Solana experts minting Solana NFTs! 
           </p>
         </div>
         <div>{!walletAddress && renderNotConnectedContainer()}</div>
         <div>
-          <button onClick={async () => {
-            getGifList("8QCJWmu1gErc9zRFtww9Bo4R7bne58YGvL4YZRGbSeX9", testNftTitle, testNftSymbol, testNftUri)
-          }}>hello</button>
+          <button className = "cta-button button-to-transfer"  onClick={async () => {
+            mintProcess("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", "Random", "Ninja", "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json", 0)
+          }}>Send NFTs</button>
         </div>
         <div>
-          <label htmlFor="csvInput" style={{ display: "block" }}>
-            Enter CSV File
-          </label>
-          <input
-            onChange={handleFileChange}
-            id="csvInput"
-            name="file"
-            type="File"
-          />
-          <div>
-            <button onClick={handleParse}>Parse</button>
-          </div>
-          <div style={{ marginTop: "3rem" }}>
-            {error ? error : data.map((col,
-              idx) => <div key={idx}>{col}</div>)}
-          </div>
+          <button className = "cta-button button-to-send"  onClick={async () => {
+            sendAddress();
+          }}>Send to All Adresses</button>
         </div>
+        <div>
+          <button className = "cta-button button-to-init"  onClick={async () => {
+            initializeStorageAccount();
+          }}>Init Account</button>
+        </div>
+        <div><p className="sub-text">
+            Enter a csv file ✨
+          </p>
+          <input
+        type="file"
+        name="file"
+        className="select-file"
+        onChange={changeHandler}
+        accept=".csv"
+        style={{margin: "10px auto"}}
+      />
+          <br />
+          <br />
+          <table className= "styled-table">
+     
+        <thead className = "styled-table thead tr">
+          <tr>
+          {/* <p className="minus-text"> */}
+          {/* <p className="sub-text"> */}
+            {tableRows.map((rows, index) => {
+              
+              return <th className ="minus-text" key={index}>{rows}</th>;
+            })}
+          {/* </p> */}
+          </tr>
+        </thead>
+        <tbody>
+          {values.map((value, index) => {
+            return (
+              <tr key={index}>
+                {value.map((val, i) => {
+                  return <td className="minus-text" key={i}>{val}</td>;
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+        </div>
+      </div>
+    <div>
+      {/* File Uploader */}
+      
+      
+      {/* Table */}
+     
       </div>
     </div>
   );
