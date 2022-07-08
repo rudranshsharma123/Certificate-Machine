@@ -6,6 +6,8 @@ import idl from './assets/idl.json'
 import { Connection, PublicKey, clusterApiUrl, Keypair } from '@solana/web3.js';
 import { AnchorProvider, Program, Provider, web3, utils } from '@project-serum/anchor';
 import NamespaceFactory from '@project-serum/anchor/dist/cjs/program/namespace';
+import { use } from 'chai';
+import { NewLineKind } from 'typescript';
 
 // Constants
 const TWITTER_HANDLE = '_buildspace';
@@ -20,12 +22,15 @@ const App = () => {
   const [positionNumber, setpositionNumber] = useState(0);
   const [walletAddress, setWalletAddress] = useState(null);
   const [namesUsers, setnamesUsers] = useState([]);
+  const [NftTitle, setNftTitle] = useState([]);
+  const [NftSymbol, setNftSymbol] = useState([]);
+  const [NftLink, setNftLink] = useState([]);
   // It will store the file uploaded by the user
   const [tableRows, setTableRows] = useState([]);
   const [values, setValues] = useState([]);
   const [recipients, setRecipients] = useState([]);
   const network = clusterApiUrl('devnet');
-  const testNftUri = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json"
+  // const NftLink = "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json"
   const TOKEN_METADATA_PROGRAM_ID = new web3.PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s",
   );
@@ -35,8 +40,8 @@ const App = () => {
   }
   const programID = new PublicKey(idl.metadata.address);
 
-  const testNftTitle = "Cukc";
-  const testNftSymbol = "CUCK";
+  // const NftTitle = "Cukc";
+  // const NftSymbol = "CUCK";
   const CREATE_MINT_SEED = "createmints";
 
   // Only call this function once for each wallet address no need to run it again it will fail
@@ -61,7 +66,7 @@ const App = () => {
 
   const getGifList = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri) => {
     try {
-
+      
       const buyer = new PublicKey(buyer_address)
       const baseAccount = new PublicKey(walletAddress)
       console.log(baseAccount)
@@ -81,7 +86,8 @@ const App = () => {
         ],
         program.programId,
       );
-      // await initializeStorageAccount();
+
+      await initializeStorageAccount();
 
 
 
@@ -159,7 +165,7 @@ const App = () => {
        
     } catch (error) {
       console.log("Error in getGifList: ", error)
-      await getGifList(recipients[positionNumber], testNftTitle, testNftSymbol, testNftUri)
+      await getGifList(recipients[positionNumber], NftTitle[positionNumber], NftSymbol[positionNumber], NftLink[positionNumber])
       
 
     }
@@ -219,7 +225,10 @@ const App = () => {
       console.log(i);
       console.log(namesUsers[i]);
       setpositionNumber(i);
-      await getGifList(recipients[i], testNftTitle, testNftSymbol, testNftUri);
+      console.log(recipients[i]);
+     
+
+      await getGifList(recipients[i], NftTitle[i], NftSymbol[i], NftLink[i]);
     
   }
   };
@@ -251,24 +260,28 @@ const App = () => {
         const valuesArray = [];
         var string = '';
         const names = [];
-
+        const symbols = [];
         const recipients_to_send = [];
+        const link = [];
         // Iterating data to get column name and their values
         results.data.map((d) => {
           rowsArray.push(Object.keys(d));
           valuesArray.push(Object.values(d));
           recipients_to_send.push(Object.values(d)[1]);
-          names.push(Object.values(d)[1]);
-          
+          names.push(Object.values(d)[0]);
+          symbols.push(Object.values(d)[3]);
+          link.push(Object.values(d)[2]);
           // string +="hello";
         });
         
         // Parsed Data Response in array format
+        setNftLink(link);
         setParsedData(results.data);
-
+        setNftTitle(names);
+        setNftSymbol(symbols);
         // Filtered Column Names
         setTableRows(rowsArray[0]);
-
+        
         // Filtered Values
         setRecipients(recipients_to_send);
         setValues(valuesArray);
@@ -305,7 +318,7 @@ const App = () => {
         <div>{!walletAddress && renderNotConnectedContainer()}</div>
         <div>
           <button className = "cta-button button-to-transfer"  onClick={async () => {
-            getGifList("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", testNftTitle, testNftSymbol, testNftUri)
+            getGifList("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", "Random", "Ninja", "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json")
           }}>Send NFTs</button>
         </div>
         <div>
