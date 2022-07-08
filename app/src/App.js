@@ -1,24 +1,14 @@
-import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
 import Papa from 'papaparse';
 import React, { useState, useEffect } from "react";
 import idl from './assets/idl.json'
 import { Connection, PublicKey, clusterApiUrl, Keypair } from '@solana/web3.js';
 import { AnchorProvider, Program, Provider, web3, utils } from '@project-serum/anchor';
-import NamespaceFactory from '@project-serum/anchor/dist/cjs/program/namespace';
-import { use } from 'chai';
-import { NewLineKind } from 'typescript';
-
-// Constants
-const TWITTER_HANDLE = '_buildspace';
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
-
 const App = () => {
-  const [data, setData] = useState([]);
+
   const allowedExtensions = ["csv"];
   // It state will contain the error when
   // correct file extension is not used
-  const [parsedData, setParsedData] = useState([]);
   const [walletAddress, setWalletAddress] = useState(null);
   const [namesUsers, setnamesUsers] = useState([]);
   const [NftTitle, setNftTitle] = useState([]);
@@ -62,9 +52,10 @@ const App = () => {
       })
       .rpc();
   }
-
+ 
   const mintProcess = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri, position) => {
     try {
+   
       
       const buyer = new PublicKey(buyer_address)
       const baseAccount = new PublicKey(walletAddress)
@@ -136,7 +127,7 @@ const App = () => {
       console.log("Your transaction signature", tx);
 
       // console.log("Got the account", account)
-     
+      
       const ownerTokenAddress = await utils.token.associatedAddress({
         mint: mint.publicKey,
         owner: baseAccount,
@@ -165,8 +156,9 @@ const App = () => {
     } catch (error) {
       console.log("Error in mintProcess: ", error)
       console.log("Number is ", position);
-      delay(500);
-      await mintProcess(recipients[position], NftTitle[position], NftSymbol[position], NftLink[position])
+
+      // await sleep(1000);
+      await mintProcess(recipients[position], NftTitle[position], NftSymbol[position], NftLink[position], position);
       
 
     }
@@ -222,7 +214,7 @@ const App = () => {
   );
   const sendAddress = async () => {
     var recipients_length = recipients.length;
-    var position = 0;
+    let position = 0;
     for (var i = 0; i < recipients_length; i++) {
       console.log(i);
       console.log(namesUsers[i]);
@@ -277,7 +269,6 @@ const App = () => {
         });
         
         setNftLink(link);
-        setParsedData(results.data);
         setNftTitle(names);
         setNftSymbol(symbols);
         setTableRows(rowsArray[0]);
@@ -305,13 +296,14 @@ const App = () => {
 
 
   return (
+  
     <div className="App">
       <div className={walletAddress ? 'authed-container' : 'container'}>
 
         <div className="header-container">
-          <p className="header">NFT Helper</p>
+          <p className="header">Certificate Machine</p>
           <p className="sub-text">
-            NFT Helper is a tool asist non-Solana experts minting Solana NFTs! 
+           Tool designed to help Institutions and Business to use Solana Blockchain! 
           </p>
         </div>
         <div>{!walletAddress && renderNotConnectedContainer()}</div>
@@ -378,7 +370,9 @@ const App = () => {
      
       </div>
     </div>
-  );
+  //   </Routes>
+  // </Router>
+ );
 };
 
 export default App;
