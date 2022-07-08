@@ -165,6 +165,7 @@ const App = () => {
     } catch (error) {
       console.log("Error in mintProcess: ", error)
       console.log("Number is ", position);
+      delay(500);
       await mintProcess(recipients[position], NftTitle[position], NftSymbol[position], NftLink[position])
       
 
@@ -219,7 +220,7 @@ const App = () => {
       Connect to Wallet
     </button>
   );
-  const sendAdress = async () => {
+  const sendAddress = async () => {
     var recipients_length = recipients.length;
     var position = 0;
     for (var i = 0; i < recipients_length; i++) {
@@ -321,7 +322,7 @@ const App = () => {
         </div>
         <div>
           <button className = "cta-button button-to-send"  onClick={async () => {
-            sendAdress();
+            sendAddress();
           }}>Send to All Adresses</button>
         </div>
         <div>
