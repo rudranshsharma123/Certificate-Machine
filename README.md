@@ -21,12 +21,12 @@ Coupling all of those benefits we wanted to create a project which would fit int
 
 ![58C77C65-FCAE-45D4-B4C7-FC277F45E6ED_1_105_c](https://user-images.githubusercontent.com/62452212/178078597-ace638c7-169e-4170-a3f2-8628346e44dc.jpeg)
 
-## **Client Side**
+# **Client Side**
 <img width="895" alt="Captura de Pantalla 2022-07-09 a las 0 42 26" src="https://user-images.githubusercontent.com/62452212/178079128-9ac1767b-c620-4cc9-8e23-cabba99c4cdf.png">
 
 ## **Excel Example**
 <img width="981" alt="image" src="https://user-images.githubusercontent.com/62452212/178079184-9ec06ed7-0c0c-4a6f-8306-f9288f222080.png">
 
 
-## **User Result**
+# **User Result**
 <img width="963" alt="image" src="https://user-images.githubusercontent.com/62452212/178079237-2808ab65-1435-43ce-9156-300175587ff8.png">
