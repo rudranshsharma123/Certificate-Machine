@@ -97,7 +97,36 @@
   width: 35px;
   height: 35px;
 }
+.styled-table {
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
 
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.styled-table thead tr {
+  background-color: #05a585;
+  color: #ffffff;
+  text-align: center;
+ 
+}
+.styled-table th,
+.styled-table td {
+    padding: 15px 15px;
+}
+.styled-table tbody tr {
+  border-bottom: 1px solid #009879;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #009879;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
 .footer-text {
   color: white;
   font-size: 16px;
@@ -106,6 +135,8 @@
 .minus-text {
   font-size: 16px;
   color: white;
+  margin: 15px;
+  padding: 30px;
 }
 .button-to-transfer {
   background: -webkit-linear-gradient(left, #12b89a, #35aee2);

@@ -342,9 +342,9 @@ const App = () => {
       />
           <br />
           <br />
-          <table>
+          <table className= "styled-table">
      
-        <thead>
+        <thead className = "styled-table thead tr">
           <tr>
           {/* <p className="minus-text"> */}
           {/* <p className="sub-text"> */}
