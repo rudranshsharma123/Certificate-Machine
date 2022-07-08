@@ -1,0 +1,10 @@
+{
+    "name": "Solana Bootcamp - CLEON",
+    "symbol": "Solana",
+    "description": "This NFT means that you completed the False Solana Bootcamp! Also you are the admin",
+    "seller_fee_basis_points": 5,
+    "external_url": "",
+    "edition": "",
+    "background_color": "000000",
+    "image": "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/Solana-False-Bootcamp/CLEON.jpg"
+}
