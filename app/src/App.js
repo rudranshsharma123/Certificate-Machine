@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import idl from './assets/idl.json'
 import { Connection, PublicKey, clusterApiUrl, Keypair } from '@solana/web3.js';
 import { AnchorProvider, Program, Provider, web3, utils } from '@project-serum/anchor';
+import NamespaceFactory from '@project-serum/anchor/dist/cjs/program/namespace';
 
 // Constants
 const TWITTER_HANDLE = '_buildspace';
@@ -16,7 +17,9 @@ const App = () => {
   // It state will contain the error when
   // correct file extension is not used
   const [parsedData, setParsedData] = useState([]);
+  const [positionNumber, setpositionNumber] = useState(0);
   const [walletAddress, setWalletAddress] = useState(null);
+  const [namesUsers, setnamesUsers] = useState([]);
   // It will store the file uploaded by the user
   const [tableRows, setTableRows] = useState([]);
   const [values, setValues] = useState([]);
@@ -48,12 +51,12 @@ const App = () => {
       ],
       program.programId,
     );
-    // const txn = await program.methods
-    //   .initializeStorageAccount()
-    //   .accounts({
-    //     storageAccount: pda,
-    //   })
-    //   .rpc();
+    const txn = await program.methods
+      .initializeStorageAccount()
+      .accounts({
+        storageAccount: pda,
+      })
+      .rpc();
   }
 
   const getGifList = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri) => {
@@ -78,6 +81,10 @@ const App = () => {
         ],
         program.programId,
       );
+      // await initializeStorageAccount();
+
+
+
       // const txn = await program.methods
       //   .initializeStorageAccount()
       //   .accounts({
@@ -138,7 +145,7 @@ const App = () => {
       console.log(`Buyer's Token Address: ${buyerTokenAddress}`);
 
       // Transact with the "sell" function in our on-chain program
-      await delay(1000);
+
       await program.methods
         .send()
         .accounts({
@@ -149,9 +156,11 @@ const App = () => {
           buyerAuthority: buyer,
         })
         .rpc();
-        
+       
     } catch (error) {
       console.log("Error in getGifList: ", error)
+      await getGifList(recipients[positionNumber], testNftTitle, testNftSymbol, testNftUri)
+      
 
     }
   }
@@ -208,6 +217,8 @@ const App = () => {
     var recipients_length = recipients.length;
     for (var i = 0; i < recipients_length; i++) {
       console.log(i);
+      console.log(namesUsers[i]);
+      setpositionNumber(i);
       await getGifList(recipients[i], testNftTitle, testNftSymbol, testNftUri);
     
   }
@@ -239,13 +250,15 @@ const App = () => {
         const rowsArray = [];
         const valuesArray = [];
         var string = '';
-        const sender = [];
+        const names = [];
+
         const recipients_to_send = [];
         // Iterating data to get column name and their values
         results.data.map((d) => {
           rowsArray.push(Object.keys(d));
           valuesArray.push(Object.values(d));
-          recipients_to_send.push(Object.values(d)[1])
+          recipients_to_send.push(Object.values(d)[1]);
+          names.push(Object.values(d)[1]);
           
           // string +="hello";
         });
@@ -259,6 +272,7 @@ const App = () => {
         // Filtered Values
         setRecipients(recipients_to_send);
         setValues(valuesArray);
+        setnamesUsers(names);
         console.log(recipients);
         console.log(string);
         console.log(results.data);
@@ -283,9 +297,9 @@ const App = () => {
       <div className={walletAddress ? 'authed-container' : 'container'}>
 
         <div className="header-container">
-          <p className="header">Certificate Machine</p>
+          <p className="header">NFT Helper</p>
           <p className="sub-text">
-            View your GIF collection in the metaverse ✨
+            NFT Helper is a tool asist non-Solana experts minting Solana NFTs! 
           </p>
         </div>
         <div>{!walletAddress && renderNotConnectedContainer()}</div>
