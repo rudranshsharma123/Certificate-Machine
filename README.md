@@ -1,6 +1,6 @@
 # Certificate Machine
 
-### ** 📜 Welcome 📜**
+### **📜 Welcome 📜**
 ## **Introduction**
 
 A Solana project to help Organisations and Education institutions alike to emit their certificates as NTFs on Solana Blockchain very easily and cheap.
@@ -38,3 +38,19 @@ npm run start
 
 # **User Result**
 <img width="963" alt="image" src="https://user-images.githubusercontent.com/62452212/178079237-2808ab65-1435-43ce-9156-300175587ff8.png">
+
+
+
+
+
+
+
+# **Team Members**
+
+<img width="1237" alt="Captura de Pantalla 2022-07-09 a las 0 55 55" src="https://user-images.githubusercontent.com/62452212/178079828-5f6c8bc2-c0ad-4ee2-8da0-372c586a623b.png">
+
+<img width="1190" alt="Captura de Pantalla 2022-07-09 a las 0 56 18" src="https://user-images.githubusercontent.com/62452212/178079846-f18f4ffe-7737-45ff-b69a-b0a77aecc3fc.png">
+
+
+
+
