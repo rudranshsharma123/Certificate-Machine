@@ -19,7 +19,6 @@ const App = () => {
   // It state will contain the error when
   // correct file extension is not used
   const [parsedData, setParsedData] = useState([]);
-  const [positionNumber, setpositionNumber] = useState(0);
   const [walletAddress, setWalletAddress] = useState(null);
   const [namesUsers, setnamesUsers] = useState([]);
   const [NftTitle, setNftTitle] = useState([]);
@@ -64,7 +63,7 @@ const App = () => {
       .rpc();
   }
 
-  const getGifList = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri) => {
+  const mintProcess = async (buyer_address, name_of_nft, symbol_of_nft, metadata_uri, position) => {
     try {
       
       const buyer = new PublicKey(buyer_address)
@@ -87,7 +86,7 @@ const App = () => {
         program.programId,
       );
 
-      await initializeStorageAccount();
+      // await initializeStorageAccount();
 
 
 
@@ -164,8 +163,9 @@ const App = () => {
         .rpc();
        
     } catch (error) {
-      console.log("Error in getGifList: ", error)
-      await getGifList(recipients[positionNumber], NftTitle[positionNumber], NftSymbol[positionNumber], NftLink[positionNumber])
+      console.log("Error in mintProcess: ", error)
+      console.log("Number is ", position);
+      await mintProcess(recipients[position], NftTitle[position], NftSymbol[position], NftLink[position])
       
 
     }
@@ -221,14 +221,15 @@ const App = () => {
   );
   const sendAdress = async () => {
     var recipients_length = recipients.length;
+    var position = 0;
     for (var i = 0; i < recipients_length; i++) {
       console.log(i);
       console.log(namesUsers[i]);
-      setpositionNumber(i);
+      
       console.log(recipients[i]);
-     
+      position = i;
 
-      await getGifList(recipients[i], NftTitle[i], NftSymbol[i], NftLink[i]);
+      await mintProcess(recipients[i], NftTitle[i], NftSymbol[i], NftLink[i], position);
     
   }
   };
@@ -274,18 +275,15 @@ const App = () => {
           // string +="hello";
         });
         
-        // Parsed Data Response in array format
         setNftLink(link);
         setParsedData(results.data);
         setNftTitle(names);
         setNftSymbol(symbols);
-        // Filtered Column Names
         setTableRows(rowsArray[0]);
-        
-        // Filtered Values
         setRecipients(recipients_to_send);
         setValues(valuesArray);
         setnamesUsers(names);
+      
         console.log(recipients);
         console.log(string);
         console.log(results.data);
@@ -318,13 +316,18 @@ const App = () => {
         <div>{!walletAddress && renderNotConnectedContainer()}</div>
         <div>
           <button className = "cta-button button-to-transfer"  onClick={async () => {
-            getGifList("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", "Random", "Ninja", "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json")
+            mintProcess("3UEJXysyw2sWWNFhmjNvXqzMeg4HugiLCErYMxVuHX8W", "Random", "Ninja", "https://raw.githubusercontent.com/rudranshsharma123/Certificate-Machine/smart-contract-cleon/test.json", 0)
           }}>Send NFTs</button>
         </div>
         <div>
           <button className = "cta-button button-to-send"  onClick={async () => {
             sendAdress();
           }}>Send to All Adresses</button>
+        </div>
+        <div>
+          <button className = "cta-button button-to-init"  onClick={async () => {
+            initializeStorageAccount();
+          }}>Init Account</button>
         </div>
         <div><p className="sub-text">
             Enter a csv file ✨

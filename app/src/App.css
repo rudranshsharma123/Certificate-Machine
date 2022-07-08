@@ -57,9 +57,24 @@
   background: -webkit-linear-gradient(left, #60c657, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
-  margin:15px;
+  margin:10px;
+  right: 100px;
+  top:0%;
+  position: absolute;
 }
+.button-to-init{
+  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+  margin:15px;
+  left: 100px;
 
+  /* position: absolute;
+  top:50%;
+  left: 200px;
+  width: 120px;
+  transform: translateY(-50%); */
+}
 .submit-gif-button {
   background: -webkit-linear-gradient(left, #4e44ce, #35aee2);
   background-size: 200% 200%;
@@ -96,15 +111,21 @@
   background: -webkit-linear-gradient(left, #12b89a, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
-  left: 350px;
+  top: 60%;
+  left: 100px;
+  /* position:absolute; */
+  margin: 15px;
   
 }
 .button-to-send {
   background: -webkit-linear-gradient(left, #12b89a, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
-  left: 600px;
+  left: 100px;
   margin:15px;
+  /* position: absolute; */
+  top: 70%;
+
 }
 .gif-grid {
   display: grid;
